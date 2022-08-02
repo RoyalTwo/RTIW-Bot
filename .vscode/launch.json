@@ -7,6 +7,15 @@
         {
             "type": "pwa-node",
             "request": "launch",
+            "name": "Command Test",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "program": "${workspaceFolder}\\commands\\config\\C_notiChannel.js"
+        },
+        {
+            "type": "pwa-node",
+            "request": "launch",
             "name": "Launch Program",
             "skipFiles": [
                 "<node_internals>/**"
