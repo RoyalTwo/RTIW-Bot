@@ -14,9 +14,9 @@ const yt = new YouTube({});
 const parser = new Parser();
 let botChannel;
 
+// Registering commands and events
 const commandsPath = './commands/config';
 const commandFiles = fs.readdirSync(commandsPath).filter(file => file.endsWith('.js'));
-
 for (const file of commandFiles) {
     const filePath = path.join(commandsPath, file);
     const command = await import(`./${filePath}`);
@@ -25,7 +25,6 @@ for (const file of commandFiles) {
 
 const eventsPath = './events';
 const eventsFiles = fs.readdirSync(eventsPath).filter(file => file.endsWith('.js'));
-
 for (const file of eventsFiles) {
     const filePath = path.join(eventsPath, file);
     const event = await import(`./${filePath}`);
@@ -35,23 +34,6 @@ for (const file of eventsFiles) {
         client.on(event.default.name, (...args) => event.default.execute(...args));
     }
 }
-
-
-client.on('interactionCreate', async interaction => {
-    if (!interaction.isChatInputCommand()) return;
-
-    const command = client.commands.get(interaction.commandName);
-    console.log(botChannel);
-
-    if (!command) return;
-
-    try {
-        await command.default.execute(interaction);
-    } catch (error) {
-        console.error(error);
-        await interaction.reply({ content: 'There was an error while executing this command!', ephemeral: true });
-    }
-});
 
 
 // EthosLab YT channel tracking
