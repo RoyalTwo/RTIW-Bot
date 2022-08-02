@@ -13,10 +13,11 @@ const parser = new Parser();
 let botChannel;
 
 client.once('ready', () => {
+    //should load settings from config database, but i'm testing this now
     console.log('Discord Bot Online!');
     botChannel = client.channels.cache.get("1003755009151864862")
     //should change value of bot channel
-    let test = changeBotChannel(client, 'reagt');
+    let test = changeBotChannel(client, '234', 'testchannelid');
     client.guilds.fetch()
 });
 
