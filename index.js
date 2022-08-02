@@ -29,9 +29,9 @@ for (const file of eventsFiles) {
     const filePath = path.join(eventsPath, file);
     const event = await import(`./${filePath}`);
     if (event.default.once) {
-        client.once(event.default.name, (...args) => event.default.execute(...args));
+        client.once(event.default.name, (interaction) => event.default.execute(interaction));
     } else {
-        client.on(event.default.name, (...args) => event.default.execute(...args));
+        client.on(event.default.name, (interaction) => event.default.execute(interaction));
     }
 }
 
