@@ -1,14 +1,16 @@
 import * as dotenv from 'dotenv';
 dotenv.config();
-import { Client, GatewayIntentBits } from 'discord.js';
+import { Client, Collection, GatewayIntentBits } from 'discord.js';
 import { YouTube } from '@livecord/notify';
 import Parser from 'rss-parser';
 import * as fs from 'fs'
+import * as path from 'path'
 import { changeBotChannel } from './db_manip.js';
 
 const TOKEN = process.env.BOT_TOKEN;
 const client = new Client({ intents: [GatewayIntentBits.Guilds] });
-const yt = new YouTube({})
+client.commands = new Collection();
+const yt = new YouTube({});
 const parser = new Parser();
 let botChannel;
 
@@ -18,7 +20,30 @@ client.once('ready', () => {
     botChannel = client.channels.cache.get("1003755009151864862")
     //should change value of bot channel
     let test = changeBotChannel(client, '234', 'testchannelid');
-    client.guilds.fetch()
+});
+
+const commandsPath = './commands/config';
+const commandFiles = fs.readdirSync(commandsPath).filter(file => file.endsWith('.js'));
+
+for (const file of commandFiles) {
+    const filePath = path.join(commandsPath, file);
+    const command = await import(`./${filePath}`);
+    client.commands.set(command.default.name, command);
+}
+
+client.on('interactionCreate', async interaction => {
+    if (!interaction.isChatInputCommand()) return;
+
+    const command = client.commands.get(interaction.commandName);
+
+    if (!command) return;
+
+    try {
+        await command.default.execute(interaction);
+    } catch (error) {
+        console.error(error);
+        await interaction.reply({ content: 'There was an error while executing this command!', ephemeral: true });
+    }
 });
 
 
