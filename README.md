@@ -20,11 +20,15 @@ a lot, even though this is a pretty straightforward bot if you look at the code.
 I absolutely could've just used any of the many bots available out there, but I'm glad I made it myself :D
 
 ### How To Host (if you'd want to do that for... some reason?)
-```bash
-git clone https://github.com/RoyalTwo/RTIW-Bot.git
-npm init
-node .
-```
+- Clone the repo, and make a new file in the folder called ".env"
+- In .env, paste the following:
+    ```bash
+    BOT_TOKEN=""
+    BOT_ID=""
+    DB_URL=""
+    ```
+and put your values into the quotes. BOT_TOKEN and BOT_ID are obtained from your Discord Developer page, and DB_URL is the URL to your MongoDB database.
+
 
 ---
 <h6 align="center">❤️</h6>
