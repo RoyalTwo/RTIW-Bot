@@ -4,7 +4,7 @@ import { Client, GatewayIntentBits } from 'discord.js';
 import { YouTube } from '@livecord/notify';
 import Parser from 'rss-parser';
 import * as fs from 'fs'
-import { changeBotChannel } from './db_manip';
+import { changeBotChannel } from './db_manip.js';
 
 const TOKEN = process.env.BOT_TOKEN;
 const client = new Client({ intents: [GatewayIntentBits.Guilds] });
@@ -15,7 +15,9 @@ let botChannel;
 client.once('ready', () => {
     console.log('Discord Bot Online!');
     botChannel = client.channels.cache.get("1003755009151864862")
-    changeBotChannel('test', 'reagt');
+    //should change value of bot channel
+    let test = changeBotChannel(client, 'reagt');
+    client.guilds.fetch()
 });
 
 

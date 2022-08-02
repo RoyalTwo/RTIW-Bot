@@ -2,10 +2,10 @@ import { MongoClient } from "mongodb";
 import * as dotenv from 'dotenv';
 dotenv.config();
 
-export function changeBotChannel(client, channel) {
-    MongoClient.connect(process.env.DB_URL, (err, client) => {
-        const db = client.db();
-        console.log(db);
-        client.close();
-    });
+const mongoClient = new MongoClient(process.env.DB_URL);
+
+export async function changeBotChannel(discClient, channel) {
+    mongoClient.connect();
+    const serverCollection = await mongoClient.db('discord_config').collection("servers");
+    mongoClient.close();
 }
