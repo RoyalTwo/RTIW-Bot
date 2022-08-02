@@ -41,7 +41,7 @@ setInterval((async () => {
         fs.writeFileSync("./cs-updates.json", JSON.stringify(comparePostDate));
         botChannel.send(`@everyone - NEW CSGO UPDATE: https://blog.counter-strike.net/index.php/category/updates/`);
     }
-}), 300000);
+}), 60000);
 
 
 client.login(TOKEN);
