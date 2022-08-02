@@ -5,7 +5,7 @@ import { YouTube } from '@livecord/notify';
 import Parser from 'rss-parser';
 import * as fs from 'fs'
 import * as path from 'path'
-import { changeBotChannel } from './db_manip.js';
+import { retrieveCollection, retrieveAllDocuments } from './db_manip.js';
 
 const TOKEN = process.env.BOT_TOKEN;
 const client = new Client({ intents: [GatewayIntentBits.Guilds] });
@@ -51,20 +51,25 @@ New video from ${video.author}!
 ${video.link}`);
 });
 
+await client.login(TOKEN);
+botChannel = client.channels.cache.get("1003755009151864862");
+
 
 // CS:GO Update tracking
 setInterval((async () => {
-    let recentPostDate = JSON.parse(fs.readFileSync("./cs-updates.json"))
+
+    let recentPostDate = JSON.parse(fs.readFileSync("./cs_update.json"))
 
     const feed = await parser.parseURL("https://blog.counter-strike.net/index.php/category/updates/feed/");
     const comparePostDate = feed.lastBuildDate;
 
     if (recentPostDate != comparePostDate) {
-        fs.writeFileSync("./cs-updates.json", JSON.stringify(comparePostDate));
-        botChannel.send(`@everyone - NEW CSGO UPDATE: https://blog.counter-strike.net/index.php/category/updates/`);
+        fs.writeFileSync("./cs_update.json", JSON.stringify(comparePostDate));
+        const documents = await retrieveAllDocuments();
+        documents.forEach((doc) => {
+            const botChannelID = doc.botChannel;
+            const channel = client.channels.cache.get(botChannelID);
+            channel.send(`@everyone - NEW CSGO UPDATE: https://blog.counter-strike.net/index.php/category/updates/`);
+        })
     }
 }), 60000);
-
-
-await client.login(TOKEN);
-botChannel = client.channels.cache.get("1003755009151864862");

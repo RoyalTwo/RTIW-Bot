@@ -17,3 +17,11 @@ export async function retrieveCollection() {
     mongoClient.close();
     return serverCollection;
 }
+
+export async function retrieveAllDocuments() {
+    mongoClient.connect();
+    const collection = await mongoClient.db('discord_config').collection("servers");
+    const cursor = collection.find({});
+    const allDocs = await cursor.toArray();
+    return allDocs;
+}
