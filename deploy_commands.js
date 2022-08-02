@@ -15,6 +15,14 @@ for (const file of commandFiles) {
 }
 
 const rest = new REST({ version: '10' }).setToken(process.env.BOT_TOKEN);
-rest.put(Routes.applicationCommands(process.env.BOT_ID), { body: commands })
-    .then(() => console.log('Successfully registered application commands.'))
-    .catch(console.error);
+if (!process.argv[2]) {
+    rest.put(Routes.applicationCommands(process.env.BOT_ID), { body: commands })
+        .then(() => console.log('Successfully registered application commands.'))
+        .catch(console.error);
+}
+
+if (process.argv[2] == "-d") {
+    rest.put(Routes.applicationCommands(process.env.BOT_ID), { body: [] })
+        .then(() => console.log('Successfully deleted all application commands.'))
+        .catch(console.error);
+}
