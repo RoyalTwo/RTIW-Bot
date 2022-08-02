@@ -8,6 +8,6 @@ export default {
         .addBooleanOption(option => option.setName('yt').setDescription('Toggle YouTube notifications.')),
     name: "notifier",
     async execute(interaction) {
-        console.log(interaction.channel);
+        console.log(interaction.isChatInputCommand());
     }
 }
