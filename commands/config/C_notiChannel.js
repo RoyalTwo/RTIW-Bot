@@ -6,6 +6,6 @@ export default {
         .setDescription('Changes the notification channel to the one supplied!'),
     name: "notichannel",
     async execute(interaction) {
-        await interaction.reply('Pong!');
+        await console.log(interaction);
     }
 }

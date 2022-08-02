@@ -14,14 +14,6 @@ const yt = new YouTube({});
 const parser = new Parser();
 let botChannel;
 
-client.once('ready', () => {
-    //should load settings from config database, but i'm testing this now
-    console.log('Discord Bot Online!');
-    botChannel = client.channels.cache.get("1003755009151864862")
-    //should change value of bot channel
-    let test = changeBotChannel(client, '234', 'testchannelid');
-});
-
 const commandsPath = './commands/config';
 const commandFiles = fs.readdirSync(commandsPath).filter(file => file.endsWith('.js'));
 
@@ -31,10 +23,25 @@ for (const file of commandFiles) {
     client.commands.set(command.default.name, command);
 }
 
+const eventsPath = './events';
+const eventsFiles = fs.readdirSync(eventsPath).filter(file => file.endsWith('.js'));
+
+for (const file of eventsFiles) {
+    const filePath = path.join(eventsPath, file);
+    const event = await import(`./${filePath}`);
+    if (event.default.once) {
+        client.once(event.default.name, (...args) => event.default.execute(...args));
+    } else {
+        client.on(event.default.name, (...args) => event.default.execute(...args));
+    }
+}
+
+
 client.on('interactionCreate', async interaction => {
     if (!interaction.isChatInputCommand()) return;
 
     const command = client.commands.get(interaction.commandName);
+    console.log(botChannel);
 
     if (!command) return;
 
@@ -74,4 +81,5 @@ setInterval((async () => {
 }), 60000);
 
 
-client.login(TOKEN);
+await client.login(TOKEN);
+botChannel = client.channels.cache.get("1003755009151864862");
