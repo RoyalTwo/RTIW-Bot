@@ -14,6 +14,9 @@ const yt = new YouTube({});
 const parser = new Parser();
 let botChannel;
 
+// IMPORTANT:
+// Needs to autogen data entry on server join!!!!
+
 // Registering commands and events
 const commandsPath = './commands/config';
 const commandFiles = fs.readdirSync(commandsPath).filter(file => file.endsWith('.js'));
