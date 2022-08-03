@@ -6,6 +6,7 @@ import Parser from 'rss-parser';
 import * as fs from 'fs'
 import * as path from 'path'
 import { retrieveAllDocuments } from './db_manip.js';
+import status from './util/errorSuccessMsg.js';
 
 const TOKEN = process.env.BOT_TOKEN;
 const client = new Client({
@@ -33,7 +34,7 @@ const parser = new Parser();
                 client.commands.set(command.default.name, command);
             } catch (error) {
                 // MAKE FILES FOR ERRORS
-                console.log(`${'\x1b[31m'}Error: ${"\x1b[0m"} Command "${filePath}" is not exported correctly. Skipping...`);
+                console.log(`${status('err')} Command "${filePath}" is not exported correctly. Skipping...`);
             }
         }
         else {
@@ -46,16 +47,20 @@ async function registerEvents(eventPath) {
     const eventsFiles = fs.readdirSync(eventPath).filter(file => file.endsWith('.js'));
     for (const file of eventsFiles) {
         const filePath = path.join(eventPath, file);
-        const event = await import(`./${filePath}`);
-        if (eventPath == "./events/youtube") {
-            yt.on(event.default.name, (interaction) => event.default.execute(interaction, yt, client));
-        }
-        else {
-            if (event.default.once) {
-                client.once(event.default.name, (interaction) => event.default.execute(interaction));
-            } else {
-                client.on(event.default.name, (interaction) => event.default.execute(interaction));
+        try {
+            const event = await import(`./${filePath}`);
+            if (eventPath == "./events/youtube") {
+                yt.on(event.default.name, (interaction) => event.default.execute(interaction, yt, client));
             }
+            else {
+                if (event.default.once) {
+                    client.once(event.default.name, (interaction) => event.default.execute(interaction));
+                } else {
+                    client.on(event.default.name, (interaction) => event.default.execute(interaction));
+                }
+            }
+        } catch (error) {
+            console.log(`${status('err')} Event "${filePath}" is not exported correctly. Skipping...`);
         }
     }
 }
