@@ -5,8 +5,8 @@ export default {
     data: new SlashCommandBuilder()
         .setName('notifier')
         .setDescription('Settings related to notifications.')
-        .addChannelOption(option => option.setName('channel').setDescription('Choose where notifications are posted.').setRequired(true))
-        .addBooleanOption(option => option.setName('yt').setDescription('Toggle YouTube notifications.').setRequired(true)),
+        .addChannelOption(option => option.setName('channel').setDescription('Choose where notifications are posted.'))
+        .addBooleanOption(option => option.setName('yt').setDescription('Toggle YouTube notifications.')),
     name: "notifier",
     async execute(interaction) {
         const command = interaction.options.data[0].name;
@@ -21,5 +21,6 @@ export default {
             case 'yt':
                 break;
         }
+        await interaction.reply('Channel switched!');
     }
 }
