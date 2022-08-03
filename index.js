@@ -23,13 +23,33 @@ const parser = new Parser();
 
 
 // Registering commands and events
-const commandsPath = './commands/config';
+/*const commandsPath = './commands/config';
 const commandFiles = fs.readdirSync(commandsPath).filter(file => file.endsWith('.js'));
 for (const file of commandFiles) {
     const filePath = path.join(commandsPath, file);
     const command = await import(`./${filePath}`);
     client.commands.set(command.default.name, command);
-}
+}*/
+(async function registerCommands(commandsPath) {
+    const commandFiles = fs.readdirSync(commandsPath, { withFileTypes: true });
+    for (const file of commandFiles) {
+        if (!file.isDirectory()) {
+            const filePath = path.join(commandsPath, file.name);
+            try {
+                const command = await import(`./${filePath}`);
+                client.commands.set(command.default.name, command);
+            } catch (error) {
+                console.log(`${'\x1b[31m'}Error: ${"\x1b[0m"} Command "${filePath}" is not exported correctly. Skipping...`);
+            }
+        }
+        else {
+            const newPath = path.join(commandsPath, file.name)
+            registerCommands(newPath);
+        }
+    }
+
+})('./commands');
+
 
 async function registerEvents(eventPath) {
     const eventsFiles = fs.readdirSync(eventPath).filter(file => file.endsWith('.js'));
@@ -53,7 +73,7 @@ registerEvents("./events");
 
 await client.login(TOKEN);
 
-
+// MAKE THIS INTO EVENT EMITTER
 // CS:GO Update tracking
 setInterval((async () => {
 

@@ -2,7 +2,6 @@ export default {
     name: 'ready',
     once: true,
     execute(client) {
-        //should load settings from config database, but i'm testing this now
-        console.log('Discord Bot Online!');
+        console.log(`${"\x1b[32m"}Success: ${"\x1b[0m"}` + `Discord connected as:  ${'\x1b[33m'}${client.user.username}${'\x1b[0m'}`);
     }
 }
