@@ -3,38 +3,40 @@ import * as dotenv from 'dotenv';
 dotenv.config();
 
 const mongoClient = new MongoClient(process.env.DB_URL);
+await mongoClient.connect();
+const collection = await mongoClient.db('discord_config').collection("servers");
 
 export async function changeBotChannel(server, channel) {
-    mongoClient.connect();
-    const serverCollection = await mongoClient.db('discord_config').collection("servers");
-    serverCollection.updateOne({ "serverID": server }, { $set: { "botChannel": channel } });
-    mongoClient.close();
+
+    console.log(channel);
+    await collection.updateOne({ "serverID": server }, { $set: { "botChannel": channel } });
+
 }
 
 export async function retrieveCollection() {
-    mongoClient.connect();
-    const serverCollection = await mongoClient.db('discord_config').collection("servers");
-    mongoClient.close();
-    return serverCollection;
+
+
+    return collection;
 }
 
 export async function retrieveAllDocuments() {
-    mongoClient.connect();
-    const collection = await mongoClient.db('discord_config').collection("servers");
+
     const cursor = collection.find({});
     const allDocs = await cursor.toArray();
     return allDocs;
 }
 
-// Needs expanding with more db keys!!!
+// Remember to expand with more keys when more config options
 export async function createServer(serverID, botChannel) {
-    mongoClient.connect();
-    const collection = await mongoClient.db('discord_config').collection("servers");
     const doc = {
         serverID,
         ytEnabled: "true",
         botChannel
     }
     await collection.insertOne(doc);
-    mongoClient.close();
+
+}
+
+export async function deleteServer(serverID) {
+
 }

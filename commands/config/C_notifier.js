@@ -13,7 +13,7 @@ export default {
 
         switch (command) {
             case 'channel':
-                const newChannel = interaction.channel.id;
+                const newChannel = interaction.options.data[0].value;
                 const currentServer = interaction.channel.guildId;
                 changeBotChannel(currentServer, newChannel);
                 break;

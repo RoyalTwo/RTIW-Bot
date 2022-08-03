@@ -54,7 +54,7 @@ yt.on("ready", (ready) => {
     console.log("Youtube connected at: ", ready);
 });
 
-yt.on("upload", video => {
+yt.on("upload", async (video) => {
     const documents = await retrieveAllDocuments();
     documents.forEach((doc) => {
         const botChannelID = doc.botChannel;
