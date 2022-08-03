@@ -8,7 +8,9 @@ const collection = await mongoClient.db('discord_config').collection("servers");
 
 export async function changeBotChannel(server, channel) {
     console.log(channel);
-    await collection.updateOne({ "serverID": server }, { $set: { "botChannel": channel } });
+    await collection.updateOne({ "serverID": server }, { $set: { "botChannel": channel } }, (res) => {
+        `Updated ${serverID} to use ${channel} for notifications.`
+    });
 }
 
 export async function retrieveAllDocuments() {
@@ -24,10 +26,14 @@ export async function createServer(serverID, botChannel) {
         ytEnabled: "true",
         botChannel
     }
-    await collection.insertOne(doc);
+    await collection.insertOne(doc, (res) => {
+        console.log(`Added ${serverID} to database.`)
+    });
 }
 
 export async function deleteServer(serverID) {
     const doc = { serverID };
-    collection.deleteOne(doc, (res) => { console.log("deleted") });
+    collection.deleteOne(doc, (res) => {
+        console.log(`Removed ${serverID} from database.`)
+    });
 }
