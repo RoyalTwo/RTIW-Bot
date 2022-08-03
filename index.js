@@ -21,9 +21,6 @@ client.commands = new Collection();
 const yt = new YouTube({});
 const parser = new Parser();
 
-// IMPORTANT:
-// Add new keys to server gen functions
-// ALSO: add function for adding new keys to existing servers
 
 // Registering commands and events
 const commandsPath = './commands/config';
@@ -34,37 +31,28 @@ for (const file of commandFiles) {
     client.commands.set(command.default.name, command);
 }
 
-const eventsPath = './events';
-const eventsFiles = fs.readdirSync(eventsPath).filter(file => file.endsWith('.js'));
-for (const file of eventsFiles) {
-    const filePath = path.join(eventsPath, file);
-    const event = await import(`./${filePath}`);
-    if (event.default.once) {
-        client.once(event.default.name, (interaction) => event.default.execute(interaction));
-    } else {
-        client.on(event.default.name, (interaction) => event.default.execute(interaction));
+async function registerEvents(eventPath) {
+    const eventsFiles = fs.readdirSync(eventPath).filter(file => file.endsWith('.js'));
+    for (const file of eventsFiles) {
+        const filePath = path.join(eventPath, file);
+        const event = await import(`./${filePath}`);
+        if (eventPath == "./events/youtube") {
+            yt.on(event.default.name, (interaction) => event.default.execute(interaction, yt, client));
+        }
+        else {
+            if (event.default.once) {
+                client.once(event.default.name, (interaction) => event.default.execute(interaction));
+            } else {
+                client.on(event.default.name, (interaction) => event.default.execute(interaction));
+            }
+        }
     }
 }
-
-
-// EthosLab YT channel tracking
-yt.on("ready", (ready) => {
-    yt.subscribe(["UCFKDEp9si4RmHFWJW1vYsMA", "UCEq_Dr1GHvnNPQNfgOzhZ8Q"]);
-    console.log("Youtube connected at: ", ready);
-});
-
-yt.on("upload", async (video) => {
-    const documents = await retrieveAllDocuments();
-    documents.forEach((doc) => {
-        const botChannelID = doc.botChannel;
-        const channel = client.channels.cache.get(botChannelID);
-        channel.send(`@everyone 
-        New video from ${video.author}!
-        ${video.link}`);
-    })
-});
+registerEvents("./events/youtube");
+registerEvents("./events");
 
 await client.login(TOKEN);
+
 
 // CS:GO Update tracking
 setInterval((async () => {
