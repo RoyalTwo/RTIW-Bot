@@ -10,7 +10,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const commands = [];
-const commandsPath = 'C:\\Users\\Sierra\\Documents\\Projects\\discord-bot\\commands\\';
+
 process.on('unhandledRejection', error => {
     console.error('Unhandled promise rejection:', error);
 });
@@ -21,9 +21,10 @@ async function registerCommands(commandsPath) {
         if (!file.isDirectory()) {
             const filePath = path.join(commandsPath, file.name);
             try {
-                const command = await import(`file://${filePath}`);
+                const command = await import('file://' + path.join(__dirname, '..', filePath));
                 commands.push(command.default.data.toJSON());
             } catch (error) {
+                console.error(error);
                 console.log(`${status('err')} Command "${filePath}" is not exported correctly. Skipping...`);
             }
         }
@@ -33,7 +34,7 @@ async function registerCommands(commandsPath) {
         }
     }
 }
-await registerCommands(commandsPath);
+await registerCommands('./commands');
 
 const rest = new REST({ version: '10' }).setToken(process.env.BOT_TOKEN);
 
