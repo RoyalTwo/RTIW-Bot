@@ -1,5 +1,5 @@
 import { SlashCommandBuilder } from "discord.js";
-import { changeBotChannel } from "../../db_manip.js";
+import { changeNotifierChannel } from "../../db_manip.js";
 
 export default {
     data: new SlashCommandBuilder()
@@ -15,7 +15,7 @@ export default {
             case 'channel':
                 const newChannel = interaction.options.data[0].value;
                 const currentServer = interaction.channel.guildId;
-                changeBotChannel(currentServer, newChannel);
+                changeNotifierChannel(currentServer, newChannel);
                 break;
 
             case 'yt':
