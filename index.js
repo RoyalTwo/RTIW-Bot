@@ -24,6 +24,7 @@ const parser = new Parser();
 // IMPORTANT:
 // Needs to autogen data entry on server join!!!!
 // ALSO: add function for adding new keys to existing servers
+// ALSO ALSO: Delete servers when left
 
 // Registering commands and events
 const commandsPath = './commands/config';
