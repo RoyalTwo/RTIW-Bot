@@ -7,20 +7,15 @@ await mongoClient.connect();
 const collection = await mongoClient.db('discord_config').collection("servers");
 
 export async function changeBotChannel(server, channel) {
-
     console.log(channel);
     await collection.updateOne({ "serverID": server }, { $set: { "botChannel": channel } });
-
 }
 
 export async function retrieveCollection() {
-
-
     return collection;
 }
 
 export async function retrieveAllDocuments() {
-
     const cursor = collection.find({});
     const allDocs = await cursor.toArray();
     return allDocs;
@@ -34,9 +29,9 @@ export async function createServer(serverID, botChannel) {
         botChannel
     }
     await collection.insertOne(doc);
-
 }
 
 export async function deleteServer(serverID) {
-
+    const doc = { serverID };
+    collection.deleteOne(doc, (res) => { console.log("deleted") });
 }
