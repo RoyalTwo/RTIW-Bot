@@ -5,7 +5,7 @@ import { YouTube } from '@livecord/notify';
 import Parser from 'rss-parser';
 import * as fs from 'fs'
 import * as path from 'path'
-import { retrieveCollection, retrieveAllDocuments } from './db_manip.js';
+import { retrieveAllDocuments } from './db_manip.js';
 
 const TOKEN = process.env.BOT_TOKEN;
 const client = new Client({
