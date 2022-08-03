@@ -8,14 +8,22 @@ import * as path from 'path'
 import { retrieveCollection, retrieveAllDocuments } from './db_manip.js';
 
 const TOKEN = process.env.BOT_TOKEN;
-const client = new Client({ intents: [GatewayIntentBits.Guilds] });
+const client = new Client({
+    intents: [
+        GatewayIntentBits.Guilds,
+        GatewayIntentBits.GuildIntegrations,
+        GatewayIntentBits.GuildMembers,
+        GatewayIntentBits.GuildMessages,
+        GatewayIntentBits.GuildPresences,
+        GatewayIntentBits.MessageContent]
+});
 client.commands = new Collection();
 const yt = new YouTube({});
 const parser = new Parser();
-let botChannel;
 
 // IMPORTANT:
 // Needs to autogen data entry on server join!!!!
+// ALSO: add function for adding new keys to existing servers
 
 // Registering commands and events
 const commandsPath = './commands/config';
@@ -52,8 +60,6 @@ ${video.link}`);
 });
 
 await client.login(TOKEN);
-botChannel = client.channels.cache.get("1003755009151864862");
-
 
 // CS:GO Update tracking
 setInterval((async () => {

@@ -1,7 +1,10 @@
+import { createServer } from "../db_manip.js";
+
 export default {
     name: 'guildCreate',
     once: false,
-    execute(client) {
-        console.log('Joined guild');
+    execute(guild) {
+        console.log(guild.systemChannel.name);
+        createServer(guild.id, guild.systemChannel.id)
     }
 }

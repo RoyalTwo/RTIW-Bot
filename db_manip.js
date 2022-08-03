@@ -25,3 +25,16 @@ export async function retrieveAllDocuments() {
     const allDocs = await cursor.toArray();
     return allDocs;
 }
+
+// Needs expanding with more db keys!!!
+export async function createServer(serverID, botChannel) {
+    mongoClient.connect();
+    const collection = await mongoClient.db('discord_config').collection("servers");
+    const doc = {
+        serverID,
+        ytEnabled: "true",
+        botChannel
+    }
+    await collection.insertOne(doc);
+    mongoClient.close();
+}
