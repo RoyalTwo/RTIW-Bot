@@ -33,7 +33,6 @@ const parser = new Parser();
                 const command = await import(`./${filePath}`);
                 client.commands.set(command.default.name, command);
             } catch (error) {
-                // MAKE FILES FOR ERRORS
                 console.log(`${status('err')} Command "${filePath}" is not exported correctly. Skipping...`);
             }
         }
