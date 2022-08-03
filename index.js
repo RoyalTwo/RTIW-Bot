@@ -55,9 +55,14 @@ yt.on("ready", (ready) => {
 });
 
 yt.on("upload", video => {
-    botChannel.send(`@everyone 
-New video from ${video.author}!
-${video.link}`);
+    const documents = await retrieveAllDocuments();
+    documents.forEach((doc) => {
+        const botChannelID = doc.botChannel;
+        const channel = client.channels.cache.get(botChannelID);
+        channel.send(`@everyone 
+        New video from ${video.author}!
+        ${video.link}`);
+    })
 });
 
 await client.login(TOKEN);
@@ -77,6 +82,6 @@ setInterval((async () => {
             const botChannelID = doc.botChannel;
             const channel = client.channels.cache.get(botChannelID);
             channel.send(`@everyone - NEW CSGO UPDATE: https://blog.counter-strike.net/index.php/category/updates/`);
-        })
+        });
     }
 }), 60000);
