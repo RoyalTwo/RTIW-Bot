@@ -20,11 +20,6 @@ a lot, even though this is a pretty straightforward bot if you look at the code.
 I absolutely could've just used any of the many bots available out there, but I'm glad I made it myself :D
 
 ### How To Host (if you'd want to do that for... some reason?)
-#### Release
-Download the latest release, which comes with a premade .env file (you still have to fill it out!)<br>
-I always forgot to remake it, so now it's a release.
-
-#### Building from source
 If for some reason you'd like to, this can be built from source normally. Just remember any hidden keys needed!
 - Clone the repo, and make a new file in the folder called ".env"
 - In .env, paste the following:
