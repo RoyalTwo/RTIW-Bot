@@ -11,10 +11,6 @@ export async function changeBotChannel(server, channel) {
     await collection.updateOne({ "serverID": server }, { $set: { "botChannel": channel } });
 }
 
-export async function retrieveCollection() {
-    return collection;
-}
-
 export async function retrieveAllDocuments() {
     const cursor = collection.find({});
     const allDocs = await cursor.toArray();
