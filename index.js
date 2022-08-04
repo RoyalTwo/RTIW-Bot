@@ -54,7 +54,7 @@ async function registerEvents(eventPath) {
                 yt.on(event.default.name, (interaction) => event.default.execute(interaction, yt, client));
             }
             else if (eventPath == "./events/updater") {
-                rss.on(event.default.name, (page) => event.default.execute(page, client));
+                rss.on(event.default.name, (page) => event.default.execute(page, rss, client));
             }
             else {
                 if (event.default.once) {

@@ -2,7 +2,7 @@ import { retrieveAllDocuments } from "../../db_manip.js";
 
 export default {
     name: 'update',
-    async execute(page, client) {
+    async execute(page, rss, client) {
         const documents = await retrieveAllDocuments();
         documents.forEach((doc) => {
             const botChannelID = doc.botChannel;
