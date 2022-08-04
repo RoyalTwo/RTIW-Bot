@@ -7,7 +7,7 @@ export default {
         documents.forEach((doc) => {
             const botChannelID = doc.botChannel;
             const channel = client.channels.cache.get(botChannelID);
-            channel.send(`@everyone - NEW CSGO UPDATE: https://blog.counter-strike.net/index.php/category/updates/`);
+            channel.send(`@everyone NEW - ${doc.title}: ${doc.items[0].link}`);
         });
     }
 }
