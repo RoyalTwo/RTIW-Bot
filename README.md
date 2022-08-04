@@ -3,9 +3,12 @@
 
 <img src="https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black" alt="js-badge" /> &ensp;<img src="https://img.shields.io/badge/Node.js-43853D?style=for-the-badge&logo=node.js&logoColor=white" alt="node-badge" /> &ensp;<img src="https://img.shields.io/badge/MongoDB-4EA94B?style=for-the-badge&logo=mongodb&logoColor=white" alt="mongodb-badge" />
 
-## What is this?
-This is a Discord bot originally designed for random features I wanted
-for my personal server I use to keep notes, but is now completely usable as a foundation.
+## This is my custom (experimental) version of RTIW.
+### The features in this version may not be server agnostic, keep that in mind if you want to host!
+### Check out the `main` branch for a tested version without these issues.
+
+---
+# Original README, from `main` branch:
 
 Features for users:
 * RSS feed auto updater
