@@ -1,14 +1,15 @@
 import * as path from 'path';
-import { fileURLToPath } from 'url';
 import * as fs from 'fs';
+import RSSFeed from './RSSFeed.js';
+import Parser from 'rss-parser';
+let parser = new Parser();
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-const test = path.normalize('./commands');
-console.log(await fs.readdirSync('./commands'));
+const rss = new RSSFeed();
+rss.subscribe('https://blog.counter-strike.net/index.php/category/updates/feed/');
+rss.on('update', (site) => {
+    console.log("new update");
+})
 
+const test = await parser.parseURL('https://blog.counter-strike.net/index.php/category/updates/feed/')
 
-console.log(process.cwd());
-console.log(__dirname);
-import('file://' + path.join(__dirname, '..', './commands/config/C_notifier.js'));
-console.log(path.join('..', './commands/config/C_notifier.js'));
+console.log(test.items[0]);
