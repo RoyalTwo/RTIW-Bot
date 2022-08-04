@@ -46,7 +46,7 @@ This can be built from source normally, just make sure you have a Mongo database
     BOT_ID=""
     DB_URL=""
     ```
-- Put your values into the quotes. BOT_TOKEN and BOT_ID are obtained from your Discord Developer page, and DB_URL is the URL to your MongoDB database.
+- Put your values into the quotes. `BOT_TOKEN` and `BOT_ID` are obtained from your Discord Developer page, and `DB_URL` is the URL to your MongoDB database.
 - Subscribe to your RSS/YT feed (if you don't want the defaults)
 - Run `npm init` as usual
 
