@@ -1,5 +1,5 @@
 import { EventEmitter } from 'events';
-import status from './errorSuccessMsg.js';
+import statusMsg from './errorSuccessMsg.js';
 import * as fs from 'fs';
 import Parser from 'rss-parser';
 
@@ -7,7 +7,7 @@ export default class RSSFeed extends EventEmitter {
     parser = new Parser()
     saveFile;
     current;
-    // might need options in constructor args later
+    // might want options in constructor args later
     constructor() {
         super();
         if (!(fs.existsSync('./feed_storage.json'))) {
@@ -38,13 +38,16 @@ export default class RSSFeed extends EventEmitter {
                         this.emit('update', doc);
                     }
                 }
+                else {
+                    console.log(`${statusMsg(err)} ${site.title} does not have a pubDate!`);
+                }
             })
         }, 60000)
     }
 
     async subscribe(link) {
-        if (!link) throw new Error(`${status('err')} 'link' is required - RSSFeed`);
-        if (typeof (link) != 'string') throw new Error(`${status('err')} 'link' wrong data type - RSSFeed`);
+        if (!link) throw new Error(`${statusMsg('err')} 'link' is required - RSSFeed`);
+        if (typeof (link) != 'string') throw new Error(`${statusMsg('err')} 'link' wrong data type - RSSFeed`);
 
         this.saveFile.watching.forEach((page) => {
             if (page.link == link) return
