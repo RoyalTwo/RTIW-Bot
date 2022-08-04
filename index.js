@@ -73,4 +73,6 @@ registerEvents("./events/updater");
 registerEvents("./events/youtube");
 registerEvents("./events");
 
+setTimeout(() => yt.emit('upload', { author: 'test', link: 'aertAGEeagA' }), 2000);
+
 await client.login(TOKEN);

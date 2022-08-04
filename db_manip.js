@@ -8,9 +8,23 @@ await mongoClient.connect();
 const collection = await mongoClient.db('discord_config').collection("servers");
 
 export async function retrieveAllDocuments() {
-    const cursor = collection.find({});
+    const cursor = await collection.find({});
     const allDocs = await cursor.toArray();
     return allDocs;
+}
+
+// retrieve if the value matches
+export async function retrieveDocumentsWith(key, value) {
+    const cursor = await collection.find({ [key]: value });
+    const docs = await cursor.toArray();
+    return docs;
+}
+
+// switch to .then
+export async function retrieveValue(server, key) {
+    const cursor = await collection.findOne({ "serverID": server })
+    const val = cursor[key];
+    return val;
 }
 
 export async function changeKey(server, key, value) {
@@ -37,7 +51,7 @@ export async function createServer(serverID, notifierChannel) {
 export async function deleteServer(serverID) {
     const doc = { serverID };
 
-    await collection.deleteOne(doc, (res) => {
+    collection.deleteOne(doc, (res) => {
         console.log(`${statusFunc('suc')} Removed [${serverID}].`);
     });
 
