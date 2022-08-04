@@ -1,4 +1,4 @@
-import { createServer } from "../db_manip.js";
+import { createServer } from "../../db_manip.js";
 
 export default {
     name: 'guildCreate',

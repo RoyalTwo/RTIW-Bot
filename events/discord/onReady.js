@@ -1,4 +1,4 @@
-import status from '../util/errorSuccessMsg.js';
+import status from '../../util/errorSuccessMsg.js';
 
 export default {
     name: 'ready',

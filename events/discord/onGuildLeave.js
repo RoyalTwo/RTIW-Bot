@@ -1,4 +1,4 @@
-import { deleteServer } from "../db_manip.js";
+import { deleteServer } from "../../db_manip.js";
 
 export default {
     name: 'guildDelete',

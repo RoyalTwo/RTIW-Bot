@@ -69,6 +69,9 @@ async function registerEvents(eventPath) {
         }
     }
 }
+
+// These should be replaced, this shouldn't be hardcoded.
+registerEvents("./events/discord");
 registerEvents("./events/updater");
 registerEvents("./events/youtube");
 registerEvents("./events");
