@@ -12,4 +12,4 @@ rss.on('update', (site) => {
 
 const test = await parser.parseURL('https://blog.counter-strike.net/index.php/category/updates/feed/')
 
-console.log(test.items[0]);
+//console.log(test.items[0]);

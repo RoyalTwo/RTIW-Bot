@@ -7,6 +7,7 @@ import * as fs from 'fs'
 import * as path from 'path'
 import { retrieveAllDocuments } from './db_manip.js';
 import status from './util/errorSuccessMsg.js';
+import RSSFeed from './util/RSSFeed.js';
 
 const TOKEN = process.env.BOT_TOKEN;
 const client = new Client({
@@ -20,10 +21,10 @@ const client = new Client({
 });
 client.commands = new Collection();
 const yt = new YouTube({});
-const parser = new Parser();
+const rss = new RSSFeed();
 
 
-// Registering commands and events
+// Registering commands and events (remove hard coded parts!)
 (async function registerCommands(commandsPath) {
     const commandFiles = fs.readdirSync(commandsPath, { withFileTypes: true });
     for (const file of commandFiles) {
@@ -42,6 +43,7 @@ const parser = new Parser();
         }
     }
 })('./commands');
+
 async function registerEvents(eventPath) {
     const eventsFiles = fs.readdirSync(eventPath).filter(file => file.endsWith('.js'));
     for (const file of eventsFiles) {
@@ -50,6 +52,9 @@ async function registerEvents(eventPath) {
             const event = await import(`./${filePath}`);
             if (eventPath == "./events/youtube") {
                 yt.on(event.default.name, (interaction) => event.default.execute(interaction, yt, client));
+            }
+            else if (eventPath == "./events/updater") {
+                rss.on(event.default.name, (page) => event.default.execute(page, client));
             }
             else {
                 if (event.default.once) {
@@ -60,30 +65,12 @@ async function registerEvents(eventPath) {
             }
         } catch (error) {
             console.log(`${status('err')} Event "${filePath}" is not exported correctly. Skipping...`);
+            console.error(error);
         }
     }
 }
+registerEvents("./events/updater");
 registerEvents("./events/youtube");
 registerEvents("./events");
 
 await client.login(TOKEN);
-
-// MAKE THIS INTO EVENT EMITTER PLEASE FOR THE LOVE OF GOD THIS IS BAD TO HAVE HERE
-// CS:GO Update tracking
-setInterval((async () => {
-
-    let recentPostDate = JSON.parse(fs.readFileSync("./cs_update.json"))
-
-    const feed = await parser.parseURL("https://blog.counter-strike.net/index.php/category/updates/feed/");
-    const comparePostDate = feed.lastBuildDate;
-
-    if (recentPostDate != comparePostDate) {
-        fs.writeFileSync("./cs_update.json", JSON.stringify(comparePostDate));
-        const documents = await retrieveAllDocuments();
-        documents.forEach((doc) => {
-            const botChannelID = doc.botChannel;
-            const channel = client.channels.cache.get(botChannelID);
-            channel.send(`@everyone - NEW CSGO UPDATE: https://blog.counter-strike.net/index.php/category/updates/`);
-        });
-    }
-}), 60000);

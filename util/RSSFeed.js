@@ -10,11 +10,8 @@ export default class RSSFeed extends EventEmitter {
     // might need options in constructor args later
     constructor() {
         super();
-        if (fs.existsSync('./feed_storage.json')) {
-            console.log('already exists');
-        }
-        else {
-            fs.writeFileSync('feed_storage.json', JSON.stringify({ watching: [] }));
+        if (!(fs.existsSync('./feed_storage.json'))) {
+            fs.writeFileSync('feed_storage.json', JSON.stringify({ watching: [] }, null, "\t"));
         }
         this.saveFile = JSON.parse(fs.readFileSync('feed_storage.json').toString());
         setInterval(() => this.saveFile = JSON.parse(fs.readFileSync('feed_storage.json').toString()), 500);
@@ -30,19 +27,19 @@ export default class RSSFeed extends EventEmitter {
                 const doc = await this.parser.parseURL(site.link);
                 const currentBuildDate = doc?.items[0].pubDate;
                 const savedBuildDate = site.date;
+                // refactor - replace current with saveFile, might make interval redundant
                 if (!(savedBuildDate == null) && !(currentBuildDate == null)) {
                     if (currentBuildDate != savedBuildDate) {
-                        console.log('adding build date');
                         this.current = JSON.parse(fs.readFileSync('feed_storage.json').toString());
                         this.current.watching[index].date = currentBuildDate;
                         fs.writeFileSync('feed_storage.json', JSON.stringify(
-                            this.current
+                            this.current, null, "\t"
                         ));
                         this.emit('update', doc);
                     }
                 }
             })
-        }, 1000)
+        }, 60000)
     }
 
     async subscribe(link) {
@@ -63,9 +60,12 @@ export default class RSSFeed extends EventEmitter {
                         date: doc?.items[0].pubDate
                     }
                 ]
-            }));
+            }, null, "\t"));
         }
         else {
+            for (let i = 0; i < this.saveFile.watching.length; i++) {
+                if (this.saveFile.watching[i].date == doc?.items[0].pubDate) return;
+            }
             fs.writeFileSync('feed_storage.json', JSON.stringify({
                 watching: [
                     ...this.saveFile.watching,
@@ -74,7 +74,7 @@ export default class RSSFeed extends EventEmitter {
                         date: doc?.items[0].pubDate
                     }
                 ]
-            }));
+            }, null, "\t"));
         }
     }
 }
