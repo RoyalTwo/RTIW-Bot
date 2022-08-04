@@ -7,7 +7,7 @@ export default {
         documents.forEach((doc) => {
             const botChannelID = doc.botChannel;
             const channel = client.channels.cache.get(botChannelID);
-            channel.send(`@everyone NEW - ${doc.title}: ${doc.items[0].link}`);
+            channel.send(`@everyone NEW | ${page.title}: ${page.items[0].link}`);
         });
     }
 }
