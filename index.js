@@ -73,6 +73,8 @@ registerEvents("./events/updater");
 registerEvents("./events/youtube");
 registerEvents("./events");
 
-setTimeout(() => yt.emit('upload', { author: 'test', link: 'aertAGEeagA' }), 2000);
+// Test events
+// setTimeout(() => yt.emit('upload', { author: 'test', link: 'aertAGEeagA' }), 2000);
+// setTimeout(() => rss.emit('update', { title: 'testt', items: [{ link: 'teag' }] }), 2000);
 
 await client.login(TOKEN);

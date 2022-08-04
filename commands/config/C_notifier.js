@@ -22,6 +22,7 @@ export default {
                 changeKey(currentServer, 'ytEnabled', interaction.options.data[0].value)
                 break;
             case 'rss':
+                changeKey(currentServer, 'rssEnabled', interaction.options.data[0].value)
                 break;
         }
         await interaction.reply('Option switched!');
