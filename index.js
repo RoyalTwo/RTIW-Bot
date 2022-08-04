@@ -35,6 +35,7 @@ const rss = new RSSFeed();
                 client.commands.set(command.default.name, command);
             } catch (error) {
                 console.log(`${status('err')} Command "${filePath}" is not exported correctly. Skipping...`);
+                console.log(error);
             }
         }
         else {
