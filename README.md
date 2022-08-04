@@ -3,23 +3,13 @@
 
 <img src="https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black" alt="js-badge" /> &ensp;<img src="https://img.shields.io/badge/Node.js-43853D?style=for-the-badge&logo=node.js&logoColor=white" alt="node-badge" /> &ensp;<img src="https://img.shields.io/badge/MongoDB-4EA94B?style=for-the-badge&logo=mongodb&logoColor=white" alt="mongodb-badge" />
 
-## What is this?
-This is a Discord bot originally designed for random features I wanted
-for my personal server I use to keep notes, but is now completely usable as a foundation.
+## This is my custom (experimental) version of RTIW.
+### The features in this version may not be server agnostic, keep that in mind if you want to host!
+### Check out the `main` branch for a tested version without these issues.
 
-Features for users:
-* RSS feed auto updater
-* Changeable notification channel
-* YouTube channel auto updater
-* Slash commands for configuration options
-    
-Features for devs:
-* Completely server-agnostic (took a lot more time than you'd think 🙃)
-* Very easily extensible
-* Custom-made RSS feed auto updater (use it please I enjoyed making it)
-* Scripts to help you change things
 
-**It's a good base for your own bot if you have a database!**
+
+## From the original README:
 
 <img style="height:30px; display: block" alt="Fork repo" src="https://img.shields.io/github/forks/RoyalTwo/RTIW-Bot?color=lightblue&label=fork&style=for-the-badge"/>
 
