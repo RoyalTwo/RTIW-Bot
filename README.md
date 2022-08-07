@@ -18,6 +18,7 @@ Features for devs:
 * Very easily extensible
 * Custom-made RSS feed auto updater (use it please I enjoyed making it)
 * Scripts to help you change things
+* Uses MongoDB for backend storage!
 
 **It's a good base for your own bot if you have a database!**
 
